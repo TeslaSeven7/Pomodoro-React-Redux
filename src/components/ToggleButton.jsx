@@ -3,6 +3,8 @@ import play from '../assets/play-button.svg';
 import reset from '../assets/reset.svg';
 import { useSelector, useDispatch } from 'react-redux';
 import { startChrono, resetChrono } from '../features/chrono';
+import classNames from 'classnames';
+
 export default function ToggleButton() {
 	const dispatch = useDispatch();
 	const chronoValues = useSelector((state) => state.chrono);
@@ -16,7 +18,10 @@ export default function ToggleButton() {
 	return (
 		<button
 			onClick={toggleChrono}
-			className='px-4 py-2 text-slate-800 flex justify-center items-center mx-auto bg-slate-300 rounded hover:bg-slate-200'>
+			className={classNames(
+				'px-4 py-2 text-slate-800 flex  justify-center items-center mx-auto border-2 relative bottom-[3px] border-black rounded shadow-[4px_4px_0px_0px_#000000] hover:bottom-[0px] hover:shadow-[0px_0px_0px_0px_#000000] transition-all',
+				chronoValues.isPlaying ? 'bg-orange-500' : 'bg-lime-500'
+			)}>
 			<span className='mr-3 text-lg'>
 				{chronoValues.isPlaying ? 'Reset' : 'Start'}
 			</span>
