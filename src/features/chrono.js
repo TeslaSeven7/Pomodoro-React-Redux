@@ -9,12 +9,12 @@ const initialState = {
 		value: 300,
 		runningValue: 300,
 	},
-	isPLaying: false,
+	isPlaying: false,
 	intervalID: undefined,
 	cycles: 0,
 	displayedValue: {
 		value: 1500,
-		heading: 'work',
+		heading: 'Work',
 	},
 };
 export const chrono = createSlice({
@@ -26,7 +26,7 @@ export const chrono = createSlice({
 			//block below 1
 			if (chosenState.value + action.payload.value === 0) return;
 			if (action.payload.type === 'session') {
-				if (!state.isPLaying) {
+				if (!state.isPlaying) {
 					chosenState.value = chosenState.value + action.payload.value;
 					chosenState.runningValue =
 						chosenState.runningValue + action.payload.value;
@@ -39,17 +39,33 @@ export const chrono = createSlice({
 			}
 		},
 		tick: (state, action) => {
-			return;
+			if (state.session.runningValue > 0) {
+				state.session.runningValue--;
+				state.displayedValue.value = state.session.runningValue;
+				state.displayedValue.heading = 'Work';
+			} else if (state.pause.runningValue > 0) {
+				state.pause.runningValue--;
+				state.displayedValue.value = state.pause.runningValue;
+				state.displayedValue.heading = 'Pause';
+			} else {
+				state.cycles++;
+				state.session.runningValue = state.session.value - 1;
+				state.displayedValue.value = state.session.value - 1;
+				state.displayedValue.heading = 'Work';
+				state.pause.runningValue = state.pause.value;
+			}
 		},
 		setUpChrono: (state, action) => {
-			state.isPLaying = true;
+			state.isPlaying = true;
 			state.intervalID = action.payload;
-			console.log(state.isPLaying);
 		},
 		resetChrono: (state, action) => {
 			window.clearInterval(state.intervalID);
-			state.isPLaying = false;
-			console.log(state.isPLaying);
+			state.isPlaying = false;
+			state.session.runningValue = state.session.value;
+			state.pause.runningValue = state.pause.value;
+			state.displayedValue.value = state.session.runningValue;
+			state.cycles = 0;
 		},
 	},
 });
@@ -63,5 +79,6 @@ export function startChrono(action) {
 	};
 }
 
-export const { updateChronoValues, setUpChrono, resetChrono } = chrono.actions;
+export const { updateChronoValues, setUpChrono, resetChrono, tick } =
+	chrono.actions;
 export default chrono.reducer;
