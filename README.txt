@@ -1,1 +1,1 @@
-<img src='./snippet.PNG' width=200px>
+![alt text](https://i.postimg.cc/dttLkn6m/snippet.png)
