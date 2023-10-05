@@ -1,0 +1,1 @@
+![alt text](https://github.com/TeslaSeven7/Pomodoro-React-Redux/blob/main/snippet.png/?raw=true)
