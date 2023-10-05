@@ -5,14 +5,16 @@ import { useSelector, useDispatch } from 'react-redux';
 import { startChrono, resetChrono } from '../features/chrono';
 import classNames from 'classnames';
 
-export default function ToggleButton({ type, action }) {
+export default function ToggleButton({ type, action, disableInputOnPlaying }) {
 	const dispatch = useDispatch();
 	const chronoValues = useSelector((state) => state.chrono);
 	function toggleChrono() {
 		if (!chronoValues.isPlaying) {
 			dispatch(startChrono(type, action));
+			disableInputOnPlaying(true);
 		} else {
 			dispatch(resetChrono());
+			disableInputOnPlaying(false);
 		}
 	}
 	return (

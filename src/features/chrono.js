@@ -2,10 +2,14 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
 	work: {
+		id: 1,
+		name: 'work',
 		value: 1500,
 		runningValue: 1500,
 	},
 	pause: {
+		id: 2,
+		name: 'pause',
 		value: 300,
 		runningValue: 300,
 	},
@@ -22,24 +26,6 @@ export const chrono = createSlice({
 	name: 'chrono',
 	initialState,
 	reducers: {
-		// updateChronoValues: (state, action) => {
-		// 	const chosenState = state[action.payload.type];
-
-		// 	//block below 1
-		// 	if (chosenState.value + action.payload.value === 0) return;
-		// 	if (action.payload.type === 'work') {
-		// 		if (!state.isPlaying) {
-		// 			chosenState.value = chosenState.value + action.payload.value;
-		// 			chosenState.runningValue =
-		// 				chosenState.runningValue + action.payload.value;
-		// 			state.displayedValue.value = chosenState.runningValue;
-		// 		} else {
-		// 			chosenState.value = chosenState.value + action.payload.value;
-		// 		}
-		// 	} else if (action.payload.type === 'pause') {
-		// 		chosenState.value = chosenState.value + action.payload.value;
-		// 	}
-		// },
 		updateChronoValues: (state, action) => {
 			const chosenState = state[action.payload.type];
 
@@ -50,7 +36,11 @@ export const chrono = createSlice({
 				chosenState.runningValue =
 					chosenState.runningValue + action.payload.value;
 				state.displayedValue.value = chosenState.runningValue;
-				console.log('playing');
+
+				state.displayedValue.heading =
+					action.payload.type.charAt(0).toUpperCase() +
+					action.payload.type.slice(1);
+				console.log('not playing');
 			} else {
 				chosenState.value = chosenState.value + action.payload.value;
 				console.log('playing');
@@ -63,15 +53,23 @@ export const chrono = createSlice({
 				selectedSessionText.charAt(0).toUpperCase() +
 				selectedSessionText.slice(1);
 
-			const phaseNames = Object.keys(initialState).filter((key) => {
-				const phase = initialState[key];
-				return (
-					phase &&
-					typeof phase === 'object' &&
-					'value' in phase &&
-					'runningValue' in phase
-				);
-			});
+			// Specify the keys you want to exclude
+			const keysToExclude = [
+				'isPlaying',
+				'intervalID',
+				'cycles',
+				'displayedValue',
+				' currentPhaseIndex',
+			];
+			// Extract the objects within initialState, excluding keys from keysToExclude
+			const phaseNames = Object.entries(initialState)
+				.filter(
+					([key, value]) =>
+						typeof value === 'object' && !keysToExclude.includes(key)
+				)
+				.map(([key, value]) => key);
+
+			console.log(phaseNames);
 			const currentPhase = phaseNames[state.currentPhaseIndex];
 			const currentCountdown = initialState[currentPhase].runningValue;
 
@@ -114,15 +112,12 @@ export const chrono = createSlice({
 		resetChrono: (state, action) => {
 			window.clearInterval(state.intervalID);
 			state.isPlaying = false;
+
+			//!REMETTRE LE BON HEADING
 			state.work.runningValue = state.work.value;
 			state.pause.runningValue = state.pause.value;
 			state.displayedValue.value = state.work.runningValue;
 			state.cycles = 0;
-		},
-		choseChrono: (state, action) => {
-			const chosenState = state[action.payload];
-			state.displayedValue.value = chosenState.value;
-			state.displayedValue.heading = 'Pause';
 		},
 	},
 });
@@ -136,11 +131,6 @@ export function startChrono(type, action) {
 	};
 }
 
-export const {
-	updateChronoValues,
-	setUpChrono,
-	resetChrono,
-	tick,
-	choseChrono,
-} = chrono.actions;
+export const { updateChronoValues, setUpChrono, resetChrono, tick } =
+	chrono.actions;
 export default chrono.reducer;
