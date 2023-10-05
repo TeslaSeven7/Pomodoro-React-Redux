@@ -1,1 +1,1 @@
-<img src="https://i.postimg.cc/dttLkn6m/snippet.png" width="100" height="100"/>
+https://github.com/TeslaSeven7/Pomodoro-React-Redux/blob/main/snippet.PNG
