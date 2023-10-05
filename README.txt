@@ -1,1 +1,1 @@
-https://github.com/TeslaSeven7/Pomodoro-React-Redux/blob/main/snippet.PNG
+<img src='./snippet.PNG' width=200px>
