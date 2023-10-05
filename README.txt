@@ -1,1 +1,1 @@
-![Screenshot](snippet.PNG)
+<img src="https://i.postimg.cc/dttLkn6m/snippet.png" width="100" height="100"/>
