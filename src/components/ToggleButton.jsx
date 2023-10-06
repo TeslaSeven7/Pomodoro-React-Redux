@@ -7,6 +7,7 @@ import classNames from 'classnames';
 
 export default function ToggleButton({ type, action, disableInputOnPlaying }) {
 	const dispatch = useDispatch();
+
 	const chronoValues = useSelector((state) => state.chrono);
 	function toggleChrono() {
 		if (!chronoValues.isPlaying) {

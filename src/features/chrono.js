@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
+let initialState = {
 	work: {
 		id: 1,
 		name: 'work',
@@ -30,6 +30,7 @@ export const chrono = createSlice({
 			const chosenState = state[action.payload.type];
 
 			//block below 1
+			console.log(chosenState);
 			if (chosenState.value + action.payload.value === 0) return;
 			if (!state.isPlaying) {
 				chosenState.value = chosenState.value + action.payload.value;
@@ -119,8 +120,48 @@ export const chrono = createSlice({
 			state.displayedValue.value = state.work.runningValue;
 			state.cycles = 0;
 		},
+		updateInitialState: (state, action) => {
+			const obj1 = { ...action.payload.payload };
+			const newObj = {};
+
+			// Convert the object into an array of values
+			const objArray = Object.values(obj1);
+
+			// Sort the array based on the id property
+			objArray.sort((a, b) => a.id - b.id);
+
+			// Create a new object with the sorted objects
+			const sortedObj = {};
+
+			objArray.forEach((item, index) => {
+				sortedObj[index] = item;
+			});
+			console.log(state);
+			console.log(sortedObj);
+			initialState = {
+				...initialState,
+				...mergeObjects(initialState, sortedObj),
+			};
+			console.log(initialState);
+		},
 	},
 });
+
+function mergeObjects(obj1, obj2) {
+	const mergedObject = { ...obj1 };
+
+	for (const key in obj2) {
+		if (obj2.hasOwnProperty(key)) {
+			const newKey = obj2[key].name;
+			if (!mergedObject[newKey]) {
+				mergedObject[newKey] = { ...obj2[key] };
+			}
+		}
+	}
+
+	return mergedObject;
+}
+
 export function startChrono(type, action) {
 	return function (dispatch, getState) {
 		const intervalID = setInterval(() => {
@@ -131,6 +172,11 @@ export function startChrono(type, action) {
 	};
 }
 
-export const { updateChronoValues, setUpChrono, resetChrono, tick } =
-	chrono.actions;
+export const {
+	updateChronoValues,
+	setUpChrono,
+	resetChrono,
+	tick,
+	updateInitialState,
+} = chrono.actions;
 export default chrono.reducer;
