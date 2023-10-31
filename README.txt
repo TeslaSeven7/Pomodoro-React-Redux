@@ -1,1 +1,1 @@
-![snippet](./snippet.PNG)
+![snippet](https://github.com/TeslaSeven7/Pomodoro-React-Redux/blob/main/snippet.PNG)
