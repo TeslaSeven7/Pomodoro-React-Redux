@@ -1,1 +1,1 @@
-![snippet](./snippet.PNG)
+![snippet](./snippet.png)
