@@ -1,1 +1,1 @@
-![snippet](https://raw.githubusercontent.com/TeslaSeven7/Pomodoro-React-Redux/main/snippet.PNG)
+![snippet](https://github.com/TeslaSeven7/Pomodoro-React-Redux/raw/main/snippet.PNG)
